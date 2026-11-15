@@ -12,9 +12,9 @@ import java.util.List;
  *
  * <p>PROG2004 Object Oriented Programming - Assessment 1.</p>
  *
- * <p><b>Student:</b> Jiarui Zhang (25259638)<br>
- * <b>Project:</b> A1-25259638<br>
- * <b>GitHub repository:</b> https://github.com/carry8573/A1-25259638
+ * <p><b>Student:</b> Jiarui Zhang (25259638), MySCU username j.zhang.95<br>
+ * <b>Project:</b> A1-j.zhang.95<br>
+ * <b>GitHub repository:</b> https://github.com/carry8573/A1-j.zhang.95
  * (public, so the tutor can open it without an invitation)<br>
  * <b>Video demonstration:</b> &lt;add the link to your five minute video&gt;</p>
  *
@@ -189,6 +189,51 @@ public class AssignmentOne {
         System.out.println("The same call applied to every appointment in the clinic:");
         System.out.println("   as built : " + describeTimes(wholeDay));
         System.out.println("   sorted   : " + describeTimes(manager.sortByTime(wholeDay)));
+
+        printTitle("PART 5 - THE SAME CLASSES, A DIFFERENT CLINIC");
+        System.out.println("No rule above is tied to one timetable or to the machine's own");
+        System.out.println("date: both are objects handed to the manager, so a different");
+        System.out.println("clinic is a different object, not a different version of the code.");
+        System.out.println();
+
+        // A different timetable: an evening clinic open for three hours in twenty
+        // minute slots. Neither Schedule nor AppointmentManager was edited for it.
+        Schedule evening = new Schedule(LocalTime.of(17, 0), LocalTime.of(20, 0), 20);
+        AppointmentManager eveningManager = new AppointmentManager(evening, today);
+        System.out.println("A second timetable: " + evening.describe());
+        System.out.println("   its slots      : " + describeSlots(evening.getSlots()));
+        System.out.println("   17:20 a slot?  : " + evening.isValidSlot(LocalTime.of(17, 20)));
+        System.out.println("   17:15 a slot?  : " + evening.isValidSlot(LocalTime.of(17, 15)));
+        System.out.println("   booked into it : " + eveningManager.addAppointment(
+                new Appointment(jane, gp, LocalTime.of(17, 20), "Evening review", today)));
+        System.out.println();
+
+        // A different day: the same roster rule, checked against Saturday instead
+        // of today. Which day it is comes from the manager, not from the clock.
+        AppointmentManager saturday = new AppointmentManager(new Schedule(), WeekDay.SATURDAY);
+        HealthProfessional worksSaturday = findById(staff, "1002");
+        HealthProfessional weekdaysOnly = findById(staff, "1001");
+        System.out.println("A second day: the same rule, applied to Saturday.");
+        System.out.println("   " + saturday.addAppointment(
+                new Appointment(jane, worksSaturday, LocalTime.of(10, 0), "Saturday visit",
+                        WeekDay.SATURDAY)));
+        System.out.println("   " + saturday.addAppointment(
+                new Appointment(jane, weekdaysOnly, LocalTime.of(10, 0), "Saturday visit",
+                        WeekDay.SATURDAY)));
+        System.out.println();
+        System.out.println("An appointment written for Saturday is not accepted by the");
+        System.out.println("collection that is managing today:");
+        System.out.println("   " + manager.addAppointment(
+                new Appointment(jane, worksSaturday, LocalTime.of(15, 0), "Wrong day",
+                        WeekDay.SATURDAY)));
+        System.out.println();
+
+        // The manager can also say what is still free, so a receptionist can be
+        // offered the available times instead of only being told what is refused.
+        List<LocalTime> freeForGp = manager.getFreeSlots(gp);
+        System.out.println("Free slots left for " + gp.getName() + " today: "
+                + freeForGp.size() + " of " + manager.getSchedule().getSlotCount());
+        System.out.println("   " + describeSlots(freeForGp));
 
         printTitle("PART 6 - BOOKING ERROR CASES");
         System.out.println("The manager refuses a booking it cannot make, and explains why:");
@@ -441,6 +486,55 @@ public class AssignmentOne {
     }
 
     /**
+     * Describes a list of slot times in one line, for example
+     * {@code "08:00, 08:30, 09:00, ... (16 slots)"}.
+     *
+     * <p>Only the first six times are written out. The point of the line is to
+     * show that a timetable is data rather than code, and sixteen times in a row
+     * would bury that point.</p>
+     *
+     * @param slots the slot times to describe
+     * @return the description, or {@code "none"} for an empty list
+     */
+    private static String describeSlots(List<LocalTime> slots) {
+        if (slots.isEmpty()) {
+            return "none";
+        }
+        StringBuilder text = new StringBuilder();
+        int shown = Math.min(slots.size(), 6);
+        for (int i = 0; i < shown; i++) {
+            if (i > 0) {
+                text.append(", ");
+            }
+            text.append(Schedule.format(slots.get(i)));
+        }
+        if (slots.size() > shown) {
+            text.append(", ...");
+        }
+        text.append(" (").append(slots.size()).append(" slots)");
+        return text.toString();
+    }
+
+    /**
+     * Finds a professional by identifier.
+     *
+     * <p>Used by the demonstration when it needs a named professional rather than
+     * the first one on duty, for example to show the roster of a different day.</p>
+     *
+     * @param staff the professionals to search
+     * @param id    the identifier to look for
+     * @return the matching professional, or {@code null} if there is none
+     */
+    private static HealthProfessional findById(List<HealthProfessional> staff, String id) {
+        for (HealthProfessional professional : staff) {
+            if (professional.getId().equals(id)) {
+                return professional;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Finds the first professional of a given type who is working today.
      *
      * <p>The type is recognised from the start of the role name, so this method
@@ -504,7 +598,7 @@ public class AssignmentOne {
     private static void printBanner() {
         System.out.println("================================================================");
         System.out.println(" PROG2004 Assessment 1 - Clinic Appointment System");
-        System.out.println(" Jiarui Zhang (25259638)");
+        System.out.println(" A1-j.zhang.95 - Jiarui Zhang (25259638)");
         System.out.println("================================================================");
         System.out.println();
     }

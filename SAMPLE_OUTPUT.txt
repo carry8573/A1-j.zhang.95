@@ -1,9 +1,9 @@
 ================================================================
  PROG2004 Assessment 1 - Clinic Appointment System
- Jiarui Zhang (25259638)
+ A1-j.zhang.95 - Jiarui Zhang (25259638)
 ================================================================
 
-Today is Sunday 2026-11-15, so every appointment below is for today.
+Today is Monday 2026-11-16, so every appointment below is for today.
 
 ================================================================
  PART 3 - EVERY PROFESSIONAL, PRINTED WITH ITS FULL DETAILS
@@ -127,18 +127,18 @@ supplies its own role and its own service:
  PART 3 - THE ROSTER FOR TODAY
 ================================================================
 
-On duty on Sunday:
-   ID 1003  GP                           Dr Priya Raman
-   ID 2002  Specialist                   Dr Sofia Rossi
+On duty on Monday:
+   ID 1001  GP                           Dr Alice Nguyen
+   ID 1002  GP                           Dr Ben Carter
+   ID 2001  Specialist                   Dr Chen Wei
+   ID 3001  Nurse                        Nina Patel
    ID 3002  Nurse                        Tom Nguyen
    ID 4002  Dietitian                    Liam O'Connor
-Not on duty on Sunday:
-   ID 1001  GP                           Dr Alice Nguyen (works Monday, Tuesday, Wednesday, Thursday, Friday)
-   ID 1002  GP                           Dr Ben Carter (works Monday, Wednesday, Friday, Saturday)
-   ID 2001  Specialist                   Dr Chen Wei (works Monday, Tuesday, Thursday)
-   ID 3001  Nurse                        Nina Patel (works Monday, Tuesday, Wednesday, Thursday, Friday)
+   ID 1004  GP                           Dr Hassan Ali
+Not on duty on Monday:
+   ID 1003  GP                           Dr Priya Raman (works Tuesday, Thursday, Saturday, Sunday)
+   ID 2002  Specialist                   Dr Sofia Rossi (works Wednesday, Friday, Saturday, Sunday)
    ID 4001  Dietitian                    Emma Wilson (works Tuesday, Thursday, Saturday)
-   ID 1004  GP                           Dr Hassan Ali (works Monday, Tuesday, Wednesday, Thursday, Friday)
 
 ================================================================
  PART 4 AND 5 - SETTING UP THE APPOINTMENT COLLECTION
@@ -156,13 +156,13 @@ Patients registered: Jane Doe (0412 345 678), Michael Brown (0423 456 789), Aish
 
 Each booking below uses a different type of professional:
 
-   BOOKED: 09:00 - Jane Doe (0412 345 678) with Dr Priya Raman (General Practitioner, ID 1003).
-   BOOKED: 09:30 - Michael Brown (0423 456 789) with Dr Priya Raman (General Practitioner, ID 1003).
-   BOOKED: 10:00 - Aisha Khan (0434 567 890) with Dr Sofia Rossi (Specialist - Paediatrics, ID 2002).
-   BOOKED: 09:00 - Jane Doe (0412 345 678) with Tom Nguyen (Nurse, ID 3002).
+   BOOKED: 09:00 - Jane Doe (0412 345 678) with Dr Alice Nguyen (General Practitioner, ID 1001).
+   BOOKED: 09:30 - Michael Brown (0423 456 789) with Dr Alice Nguyen (General Practitioner, ID 1001).
+   BOOKED: 10:00 - Aisha Khan (0434 567 890) with Dr Chen Wei (Specialist - Cardiology, ID 2001).
+   BOOKED: 09:00 - Jane Doe (0412 345 678) with Nina Patel (Nurse, ID 3001).
    BOOKED: 13:00 - Michael Brown (0423 456 789) with Liam O'Connor (Dietitian, ID 4002).
-   BOOKED: 14:30 - Aisha Khan (0434 567 890) with Dr Priya Raman (General Practitioner, ID 1003).
-   BOOKED: 11:00 - Michael Brown (0423 456 789) with Dr Sofia Rossi (Specialist - Paediatrics, ID 2002).
+   BOOKED: 14:30 - Aisha Khan (0434 567 890) with Dr Alice Nguyen (General Practitioner, ID 1001).
+   BOOKED: 11:00 - Michael Brown (0423 456 789) with Dr Chen Wei (Specialist - Cardiology, ID 2001).
 
 Appointments currently booked: 7
 
@@ -173,14 +173,14 @@ Appointments currently booked: 7
 Printing an appointment also prints the details of the chosen
 professional, whichever type that professional is:
 
-Appointment 09:00 on Sunday
+Appointment 09:00 on Monday
    Patient      : Jane Doe (0412 345 678)
    Reason       : Persistent cough
-   Professional : General Practitioner (ID: 1003)
-      Name         : Dr Priya Raman
-      Working days : Tuesday, Thursday, Saturday, Sunday
-      Room         : 5C
-      Bulk billing : No
+   Professional : General Practitioner (ID: 1001)
+      Name         : Dr Alice Nguyen
+      Working days : Monday, Tuesday, Wednesday, Thursday, Friday
+      Room         : 3B
+      Bulk billing : Yes
       Can prescribe: Yes
 
 ================================================================
@@ -204,24 +204,24 @@ the same professional at the same time as the same booking.
 
    TIME   ID     PROFESSIONAL (ROLE)                PATIENT          MOBILE        REASON
    -------------------------------------------------------------------------------------------
-   09:00  1003   Dr Priya Raman (GP)                Jane Doe         0412 345 678  Persistent cough
-   09:00  3002   Tom Nguyen (Nurse)                 Jane Doe         0412 345 678  Blood test
-   09:30  1003   Dr Priya Raman (GP)                Michael Brown    0423 456 789  Repeat prescription
-   10:00  2002   Dr Sofia Rossi (Specialist)        Aisha Khan       0434 567 890  Heart murmur review
-   11:00  2002   Dr Sofia Rossi (Specialist)        Michael Brown    0423 456 789  Follow up consultation
+   09:00  1001   Dr Alice Nguyen (GP)               Jane Doe         0412 345 678  Persistent cough
+   09:00  3001   Nina Patel (Nurse)                 Jane Doe         0412 345 678  Blood test
+   09:30  1001   Dr Alice Nguyen (GP)               Michael Brown    0423 456 789  Repeat prescription
+   10:00  2001   Dr Chen Wei (Specialist)           Aisha Khan       0434 567 890  Heart murmur review
+   11:00  2001   Dr Chen Wei (Specialist)           Michael Brown    0423 456 789  Follow up consultation
    13:00  4002   Liam O'Connor (Dietitian)          Michael Brown    0423 456 789  Type 2 diabetes meal plan
-   14:30  1003   Dr Priya Raman (GP)                Aisha Khan       0434 567 890  Annual health check
+   14:30  1001   Dr Alice Nguyen (GP)               Aisha Khan       0434 567 890  Annual health check
 
 ================================================================
  PART 5 - FILTERED BY HEALTH PROFESSIONAL ID
 ================================================================
 
-Appointments for Dr Priya Raman (ID 1003):
+Appointments for Dr Alice Nguyen (ID 1001):
    TIME   ID     PROFESSIONAL (ROLE)                PATIENT          MOBILE        REASON
    -------------------------------------------------------------------------------------------
-   09:00  1003   Dr Priya Raman (GP)                Jane Doe         0412 345 678  Persistent cough
-   09:30  1003   Dr Priya Raman (GP)                Michael Brown    0423 456 789  Repeat prescription
-   14:30  1003   Dr Priya Raman (GP)                Aisha Khan       0434 567 890  Annual health check
+   09:00  1001   Dr Alice Nguyen (GP)               Jane Doe         0412 345 678  Persistent cough
+   09:30  1001   Dr Alice Nguyen (GP)               Michael Brown    0423 456 789  Repeat prescription
+   14:30  1001   Dr Alice Nguyen (GP)               Aisha Khan       0434 567 890  Annual health check
 
 ================================================================
  PART 5 - FILTERED BY PATIENT MOBILE NUMBER
@@ -230,14 +230,14 @@ Appointments for Dr Priya Raman (ID 1003):
 Appointments for Jane Doe (0412 345 678):
    TIME   ID     PROFESSIONAL (ROLE)                PATIENT          MOBILE        REASON
    -------------------------------------------------------------------------------------------
-   09:00  1003   Dr Priya Raman (GP)                Jane Doe         0412 345 678  Persistent cough
-   09:00  3002   Tom Nguyen (Nurse)                 Jane Doe         0412 345 678  Blood test
+   09:00  1001   Dr Alice Nguyen (GP)               Jane Doe         0412 345 678  Persistent cough
+   09:00  3001   Nina Patel (Nurse)                 Jane Doe         0412 345 678  Blood test
 
 ================================================================
  PART 5 - SORTING APPLIED TO A FILTERED SUBSET AND TO EVERYTHING
 ================================================================
 
-The appointments for Dr Sofia Rossi, filtered out of the collection and sorted:
+The appointments for Dr Chen Wei, filtered out of the collection and sorted:
    as built : 11:00, 10:00
    sorted   : 10:00, 11:00
 
@@ -246,19 +246,44 @@ The same call applied to every appointment in the clinic:
    sorted   : 09:00, 09:00, 09:30, 10:00, 11:00, 13:00, 14:30
 
 ================================================================
+ PART 5 - THE SAME CLASSES, A DIFFERENT CLINIC
+================================================================
+
+No rule above is tied to one timetable or to the machine's own
+date: both are objects handed to the manager, so a different
+clinic is a different object, not a different version of the code.
+
+A second timetable: 17:00-20:00, 20 minute slots (9 slots per professional)
+   its slots      : 17:00, 17:20, 17:40, 18:00, 18:20, 18:40, ... (9 slots)
+   17:20 a slot?  : true
+   17:15 a slot?  : false
+   booked into it : BOOKED: 17:20 - Jane Doe (0412 345 678) with Dr Alice Nguyen (General Practitioner, ID 1001).
+
+A second day: the same rule, applied to Saturday.
+   BOOKED: 10:00 - Jane Doe (0412 345 678) with Dr Ben Carter (General Practitioner, ID 1002).
+   BOOKING REJECTED: Dr Alice Nguyen (General Practitioner, ID 1001) does not work on Saturday; the roster is Monday, Tuesday, Wednesday, Thursday, Friday.
+
+An appointment written for Saturday is not accepted by the
+collection that is managing today:
+   BOOKING REJECTED: this appointment is for Saturday, but this clinic is managing Monday.
+
+Free slots left for Dr Alice Nguyen today: 13 of 16
+   08:00, 08:30, 10:00, 10:30, 11:00, 11:30, ... (13 slots)
+
+================================================================
  PART 6 - BOOKING ERROR CASES
 ================================================================
 
 The manager refuses a booking it cannot make, and explains why:
 
    [same professional, same time]
-   BOOKING REJECTED: Dr Priya Raman (ID 1003) is already booked at 09:00.
+   BOOKING REJECTED: Dr Alice Nguyen (ID 1001) is already booked at 09:00.
 
    [a time that is not one of the clinic's slots]
    BOOKING REJECTED: 09:15 is not a clinic slot. The clinic runs 08:00-16:00, 30 minute slots (16 slots per professional).
 
    [a professional who is not working today]
-   BOOKING REJECTED: Dr Alice Nguyen (General Practitioner, ID 1001) does not work on Sunday; the roster is Monday, Tuesday, Wednesday, Thursday, Friday.
+   BOOKING REJECTED: Dr Priya Raman (General Practitioner, ID 1003) does not work on Monday; the roster is Tuesday, Thursday, Saturday, Sunday.
 
    [no appointment details at all]
    BOOKING REJECTED: no appointment details were supplied.
@@ -278,7 +303,7 @@ A cancellation that cannot be performed returns a warning:
    CANCELLATION FAILED: no appointment was found for health professional ID 9999 at 11:00.
 
    [known professional, but nothing booked at that time]
-   CANCELLATION FAILED: no appointment was found for health professional ID 1003 at 12:00.
+   CANCELLATION FAILED: no appointment was found for health professional ID 1001 at 12:00.
 
    [unknown patient mobile number]
    CANCELLATION FAILED: no appointments were found for mobile number 0499 999 999.
@@ -286,7 +311,7 @@ A cancellation that cannot be performed returns a warning:
 A cancellation that can be performed succeeds:
 
    [by health professional ID and time]
-   CANCELLED: the 09:30 appointment with Dr Priya Raman (ID 1003) for Michael Brown has been removed.
+   CANCELLED: the 09:30 appointment with Dr Alice Nguyen (ID 1001) for Michael Brown has been removed.
 
    [by patient mobile number]
    CANCELLED: 2 appointment(s) for Michael Brown (0423 456 789) have been removed.
@@ -299,14 +324,14 @@ Appointments currently booked: 4
 
    TIME   ID     PROFESSIONAL (ROLE)                PATIENT          MOBILE        REASON
    -------------------------------------------------------------------------------------------
-   09:00  1003   Dr Priya Raman (GP)                Jane Doe         0412 345 678  Persistent cough
-   09:00  3002   Tom Nguyen (Nurse)                 Jane Doe         0412 345 678  Blood test
-   10:00  2002   Dr Sofia Rossi (Specialist)        Aisha Khan       0434 567 890  Heart murmur review
-   14:30  1003   Dr Priya Raman (GP)                Aisha Khan       0434 567 890  Annual health check
+   09:00  1001   Dr Alice Nguyen (GP)               Jane Doe         0412 345 678  Persistent cough
+   09:00  3001   Nina Patel (Nurse)                 Jane Doe         0412 345 678  Blood test
+   10:00  2001   Dr Chen Wei (Specialist)           Aisha Khan       0434 567 890  Heart murmur review
+   14:30  1001   Dr Alice Nguyen (GP)               Aisha Khan       0434 567 890  Annual health check
 
 Cancelling again with the same details now fails, which proves
 the earlier cancellation really removed the appointment:
-   CANCELLATION FAILED: no appointment was found for health professional ID 1003 at 09:30.
+   CANCELLATION FAILED: no appointment was found for health professional ID 1001 at 09:30.
 
 ================================================================
  END OF DEMONSTRATION
