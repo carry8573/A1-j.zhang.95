@@ -9,7 +9,7 @@ person, because they carry your name, your accounts and your recording.
       it (`git remote add origin ...` then `git push -u origin master`), and
       invite the tutor and the unit assessor as collaborators if you keep it
       private.
-      The fourteen commits are already dated across the assessment period, so
+      The seventeen commits are already dated across the assessment period, so
       push them as they are - do not squash them.
 - [ ] **Record the video** using `VIDEO_SCRIPT.md`. It is written to four
       minutes forty seconds. Upload it and keep the link.
@@ -78,7 +78,7 @@ does **not** contain the `out` folder or compiled `.class` files.
 | Part 5: one collection, add, filter by ID and by phone, sorting, cancel two ways, warnings, no double bookings, flexible slots, `equals` | `AppointmentManager`, `Schedule` |
 | Part 6: end to end with error cases | `AssignmentOne.main`, sections 1 to 12 |
 | Design justification | `DESIGN.md` and `README.md` section 4 |
-| GitHub history | fourteen commits, 19 October to 14 November |
+| GitHub history | seventeen commits, 19 October to 15 November |
 | Video, under five minutes | `VIDEO_SCRIPT.md` |
 | WakaTime screenshot | add `A1-25259638-WakaTime.png` |
 | GenAI declaration | class Javadoc of `AssignmentOne` and `README.md` section 6 |
