@@ -51,6 +51,13 @@ public class AssignmentOne {
             "   -------------------------------------------------------------------------------------------";
 
     /**
+     * Prevents this class from being instantiated. It holds nothing but the
+     * demonstration, which is run through {@link #main(String[])}.
+     */
+    private AssignmentOne() {
+    }
+
+    /**
      * Runs the demonstration.
      *
      * @param args command line arguments, not used
