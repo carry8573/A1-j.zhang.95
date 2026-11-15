@@ -264,6 +264,6 @@ A full captured run is in `SAMPLE_OUTPUT.txt`.
 
 ## 7. Links
 
-- GitHub repository: **<add the repository URL here>**
+- GitHub repository: **https://github.com/carry8573/A1-25259638**
 - Video (four pillars, under 5 minutes): **<add the video link here>**
 - WakaTime report: `A1-25259638-WakaTime.png`

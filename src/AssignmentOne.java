@@ -14,7 +14,7 @@ import java.util.List;
  *
  * <p><b>Student:</b> Jiarui Zhang (25259638)<br>
  * <b>Project:</b> A1-25259638<br>
- * <b>GitHub repository:</b> https://github.com/&lt;your-username&gt;/A1-25259638
+ * <b>GitHub repository:</b> https://github.com/carry8573/A1-25259638
  * (private, tutor and unit assessor invited)<br>
  * <b>Video demonstration:</b> &lt;add the link to your five minute video&gt;</p>
  *
