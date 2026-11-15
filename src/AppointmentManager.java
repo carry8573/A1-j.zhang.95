@@ -26,6 +26,15 @@ import java.util.List;
  * time must be one of the timetable's slots, the professional must be rostered
  * for today, and a professional must never be booked twice into the same slot.</p>
  *
+ * <p>The manager is deliberately not tied to one set of opening hours or to the
+ * machine clock. Both are supplied through constructors: the timetable is a
+ * {@link Schedule} object, and the day the roster is checked against can be
+ * fixed instead of being read from the system date. Adding a second clinic, an
+ * evening clinic, or a test that has to run on a known day therefore needs no
+ * change to this class - only different objects handed to it. The manager can
+ * also report which slots are still free for a professional, so a receptionist
+ * can be told what is available instead of only being told what is refused.</p>
+ *
  * <p>PROG2004 - Assessment 1, Part 5.</p>
  *
  * @author  Jiarui Zhang (25259638)
@@ -40,10 +49,19 @@ public class AppointmentManager {
     private final Schedule schedule;
 
     /**
-     * Creates a manager for the clinic's default timetable.
+     * The day this manager treats as today, or {@code null} to follow the system
+     * clock. Fixing the day keeps the roster rule usable away from the machine's
+     * own date, for example when planning a later day or when demonstrating the
+     * rule on a known day of the week.
+     */
+    private final WeekDay workingDay;
+
+    /**
+     * Creates a manager for the clinic's default timetable, checking the roster
+     * against the real current day.
      */
     public AppointmentManager() {
-        this(new Schedule());
+        this(new Schedule(), null);
     }
 
     /**
@@ -54,10 +72,28 @@ public class AppointmentManager {
      * @throws IllegalArgumentException if the schedule is null
      */
     public AppointmentManager(Schedule schedule) {
+        this(schedule, null);
+    }
+
+    /**
+     * Creates a manager for a given timetable and a given day.
+     *
+     * <p>Passing a day makes the manager behave as if that day were today, so the
+     * same roster rule applies to a day that is not the machine's own date.
+     * Passing {@code null} means "use the real current day", which is what the
+     * two shorter constructors do.</p>
+     *
+     * @param schedule   the timetable; must not be null
+     * @param workingDay the day to treat as today, or {@code null} for the real
+     *                   current day
+     * @throws IllegalArgumentException if the schedule is null
+     */
+    public AppointmentManager(Schedule schedule, WeekDay workingDay) {
         if (schedule == null) {
             throw new IllegalArgumentException("An appointment manager needs a schedule.");
         }
         this.schedule = schedule;
+        this.workingDay = workingDay;
         this.appointments = new ArrayList<>();
     }
 
@@ -80,20 +116,75 @@ public class AppointmentManager {
     }
 
     /**
-     * Returns today as a {@link WeekDay}, so the roster can be checked.
+     * Returns the slots a professional could still be booked into on this
+     * manager's day, earliest first.
      *
-     * @return today's day of the week
+     * <p>This is the flexible side of the rules: instead of only refusing a
+     * booking, the manager can also say what is available. The result takes the
+     * roster into account, so a professional who is not working that day has no
+     * free slots at all, and the slots already taken by that professional are
+     * left out. Other professionals' bookings do not matter, because two
+     * professionals can work at the same time.</p>
+     *
+     * @param professional the professional to check; may be null
+     * @return a new list of free slot start times, empty if there are none
      */
-    private WeekDay today() {
-        return WeekDay.valueOf(LocalDate.now().getDayOfWeek().name());
+    public List<LocalTime> getFreeSlots(HealthProfessional professional) {
+        List<LocalTime> free = new ArrayList<>();
+        if (professional == null || !professional.worksOn(getWorkingDay())) {
+            return free;
+        }
+        for (LocalTime slot : schedule.getSlots()) {
+            if (!isBooked(professional, slot)) {
+                free.add(slot);
+            }
+        }
+        return free;
+    }
+
+    /**
+     * Reports whether one professional already has an appointment at one time.
+     *
+     * <p>The professional is compared with {@code equals}, which the clinic
+     * defines by ID, so two objects describing the same professional count as the
+     * same person here.</p>
+     *
+     * @param professional the professional
+     * @param time         the time to test
+     * @return {@code true} if that professional is already booked then
+     */
+    private boolean isBooked(HealthProfessional professional, LocalTime time) {
+        for (Appointment appointment : appointments) {
+            if (appointment.getProfessional().equals(professional)
+                    && appointment.getTime().equals(time)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns the day this manager treats as today, so the roster can be checked.
+     *
+     * <p>Reading the system clock is only the default. A manager created with a
+     * fixed day always answers with that day, and every roster check goes through
+     * this one method, so the two behaviours cannot drift apart.</p>
+     *
+     * @return the day to check rosters against
+     */
+    public WeekDay getWorkingDay() {
+        return workingDay != null
+                ? workingDay
+                : WeekDay.valueOf(LocalDate.now().getDayOfWeek().name());
     }
 
     /**
      * Tries to book an appointment.
      *
      * <p>The checks run in the order a receptionist would make them: is there an
-     * appointment at all, is the time a real slot, is the professional working
-     * today, and is that professional already busy at that time.</p>
+     * appointment at all, is it for the day this manager is running, is the time a
+     * real slot, is the professional working that day, and is that professional
+     * already busy at that time.</p>
      *
      * @param appointment the appointment to book; may be null
      * @return a message saying whether the booking was accepted, and why not if
@@ -104,18 +195,25 @@ public class AppointmentManager {
             return "BOOKING REJECTED: no appointment details were supplied.";
         }
         HealthProfessional professional = appointment.getProfessional();
+        // The manager is only responsible for one day, so an appointment written
+        // for another day belongs to a different manager's collection.
+        if (!appointment.getDay().equals(getWorkingDay())) {
+            return "BOOKING REJECTED: this appointment is for "
+                    + appointment.getDay().getDisplayName() + ", but this clinic is managing "
+                    + getWorkingDay().getDisplayName() + ".";
+        }
         if (!schedule.isValidSlot(appointment.getTime())) {
             return "BOOKING REJECTED: " + appointment.getTimeText()
                     + " is not a clinic slot. The clinic runs " + schedule.describe() + ".";
         }
-        if (!professional.worksOn(today())) {
+        if (!professional.worksOn(getWorkingDay())) {
             return "BOOKING REJECTED: " + professional.getName() + " (" + professional.getRole()
                     + ", ID " + professional.getId() + ") does not work on "
-                    + today().getDisplayName() + "; the roster is "
+                    + getWorkingDay().getDisplayName() + "; the roster is "
                     + professional.getWorkingDaysText() + ".";
         }
-        // equals on Appointment compares the professional and the time, so the
-        // collection itself can find a clash without a hand written loop.
+        // equals on Appointment compares the day, the professional and the time,
+        // so the collection itself can find a clash without a hand written loop.
         if (appointments.contains(appointment)) {
             return "BOOKING REJECTED: " + professional.getName() + " (ID " + professional.getId()
                     + ") is already booked at " + appointment.getTimeText() + ".";

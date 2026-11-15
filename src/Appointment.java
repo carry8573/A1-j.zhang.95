@@ -20,10 +20,13 @@ import java.util.List;
  * stays a simple, always valid record of "who, with whom, when", and the manager
  * remains the single place that decides whether a booking can be accepted.</p>
  *
- * <p>Only a time of day is stored, not a full date. The brief states that
- * appointments are only ever made for the current day, so storing a date would
- * add a value that could disagree with the clinic's actual day; the day is
- * derived with {@link #getDay()} instead.</p>
+ * <p>The day of the appointment is stored as a {@link WeekDay}, not as a full
+ * calendar date. The clinic books the current week, so a full date would carry
+ * detail the clinic never uses, while the day of the week is exactly what the
+ * roster is written in terms of. Storing the day also means an appointment can
+ * state its own day and stay correct when a manager is working with a day other
+ * than the machine's own - the booking and the roster keep using the same
+ * vocabulary.</p>
  *
  * <p>The class implements {@link Comparable} so that a list of appointments can be
  * sorted earliest to latest by time, which is the ordering required by Parts 4
@@ -45,14 +48,17 @@ public class Appointment implements Comparable<Appointment> {
     /** The health professional the patient will see. */
     private final HealthProfessional professional;
 
-    /** The time of the appointment on the current day. */
+    /** The time of the appointment on the day it belongs to. */
     private final LocalTime time;
+
+    /** The day of the week the appointment belongs to. */
+    private final WeekDay day;
 
     /** Why the patient is attending. */
     private final String reason;
 
     /**
-     * Creates an appointment with an explicit reason.
+     * Creates an appointment for the current day with an explicit reason.
      *
      * @param patient      the patient; must not be null
      * @param professional the health professional; must not be null and any type
@@ -63,6 +69,28 @@ public class Appointment implements Comparable<Appointment> {
      */
     public Appointment(Patient patient, HealthProfessional professional,
                        LocalTime time, String reason) {
+        this(patient, professional, time, reason,
+                WeekDay.valueOf(LocalDate.now().getDayOfWeek().name()));
+    }
+
+    /**
+     * Creates an appointment for a given day with an explicit reason.
+     *
+     * <p>The day is only needed when the booking is not for the machine's own
+     * date, for example when the demonstration runs the clinic on a chosen day.
+     * The four argument constructor above covers the normal case, so callers do
+     * not have to think about a day at all.</p>
+     *
+     * @param patient      the patient; must not be null
+     * @param professional the health professional; must not be null
+     * @param time         the time of the appointment; must not be null
+     * @param reason       why the patient is attending; must not be blank
+     * @param day          the day of the week the appointment is for; must not be
+     *                     null
+     * @throws IllegalArgumentException if any argument is missing or blank
+     */
+    public Appointment(Patient patient, HealthProfessional professional,
+                       LocalTime time, String reason, WeekDay day) {
         if (patient == null) {
             throw new IllegalArgumentException("An appointment must have a patient.");
         }
@@ -72,12 +100,16 @@ public class Appointment implements Comparable<Appointment> {
         if (time == null) {
             throw new IllegalArgumentException("An appointment must have a time.");
         }
+        if (day == null) {
+            throw new IllegalArgumentException("An appointment must have a day.");
+        }
         if (reason == null || reason.trim().isEmpty()) {
             throw new IllegalArgumentException("An appointment must have a reason.");
         }
         this.patient = patient;
         this.professional = professional;
         this.time = time;
+        this.day = day;
         this.reason = reason.trim();
     }
 
@@ -139,31 +171,36 @@ public class Appointment implements Comparable<Appointment> {
     }
 
     /**
-     * Returns the day this appointment falls on.
+     * Returns the day of the week this appointment falls on.
      *
-     * <p>Because every booking is for the current day, the day comes from the
-     * system date rather than from a stored field.</p>
+     * <p>This is the day the appointment was created for, not the day the program
+     * happens to be running, so a printed appointment can never show a day that
+     * disagrees with the booking.</p>
      *
-     * @return today as a {@link WeekDay}
+     * @return the day of the appointment
      */
     public WeekDay getDay() {
-        return WeekDay.valueOf(LocalDate.now().getDayOfWeek().name());
+        return day;
     }
 
     /**
-     * Orders appointments by time, earliest first.
+     * Orders appointments by day and then by time, earliest first.
      *
      * <p>Two appointments can share a time when they are with different
-     * professionals, so the professional's identifier breaks the tie. That is
+     * professionals, so the professional's identifier breaks that tie. That is
      * allowed by the brief, which only requires that the ordering by time is
-     * correct.</p>
+     * correct; the extra tie break simply keeps the order stable and repeatable.</p>
      *
      * @param other the appointment to compare with
      * @return a negative number if this appointment is earlier, zero if the same
-     *         time and professional, a positive number otherwise
+     *         day, time and professional, a positive number otherwise
      */
     @Override
     public int compareTo(Appointment other) {
+        int byDay = day.compareTo(other.day);
+        if (byDay != 0) {
+            return byDay;
+        }
         int byTime = time.compareTo(other.time);
         if (byTime != 0) {
             return byTime;
@@ -194,17 +231,22 @@ public class Appointment implements Comparable<Appointment> {
             return false;
         }
         Appointment that = (Appointment) other;
-        return professional.equals(that.professional) && time.equals(that.time);
+        return day.equals(that.day)
+                && professional.equals(that.professional)
+                && time.equals(that.time);
     }
 
     /**
      * Returns a hash code consistent with {@link #equals(Object)}.
      *
-     * @return a hash code built from the professional and the time
+     * <p>The same three values are combined in the same order, so two appointments
+     * that {@code equals} accepts always produce the same hash code.</p>
+     *
+     * @return a hash code built from the day, the professional and the time
      */
     @Override
     public int hashCode() {
-        return professional.hashCode() * 31 + time.hashCode();
+        return (day.hashCode() * 31 + professional.hashCode()) * 31 + time.hashCode();
     }
 
     /**
