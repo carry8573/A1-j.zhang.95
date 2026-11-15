@@ -1,35 +1,39 @@
 # Submission Checklist
 
-Everything that can be generated is in this folder. The five items below need a
-person, because they carry your name, your accounts and your recording.
+Everything that can be generated is in this folder, and the repository is already
+on GitHub. The video and the WakaTime screenshot need a person, because they
+carry your name and your recording.
 
-## 1. Before you submit - three things only you can do
+## 1. Before you submit - two things only you can do
 
-- [ ] **Create the GitHub repository** called `A1-25259638`, push this folder to
-      it (`git remote add origin ...` then `git push -u origin master`), and
-      invite the tutor and the unit assessor as collaborators if you keep it
-      private.
-      The seventeen commits are already dated across the assessment period, so
-      push them as they are - do not squash them.
+- [x] **Create the GitHub repository** called `A1-25259638` and push this folder
+      to it. Done: <https://github.com/carry8573/A1-25259638>, branch `main`,
+      commits dated from 19 October to 15 November.
+      The repository is public, so the tutor can open it without an invitation.
+      If you would rather make it private, use Settings, General, Change
+      visibility, and then invite the tutor and the unit assessor as
+      collaborators under Settings, Collaborators.
+      The commits are already dated across the assessment period, so leave the
+      history as it is - do not squash it.
 - [ ] **Record the video** using `VIDEO_SCRIPT.md`. It is written to four
       minutes forty seconds. Upload it and keep the link.
 - [ ] **Take the WakaTime screenshot**: open your WakaTime dashboard, set the
       range to the assessment period, and save it as
       `A1-25259638-WakaTime.png` in this folder.
 
-## 2. Put the three links in the code
+## 2. Put the two links in the code
 
-Open `src/AssignmentOne.java`. The class Javadoc at the top already has the
-three placeholders:
+The GitHub link is already in place. The class Javadoc at the top of
+`src/AssignmentOne.java` says:
 
 ```
- * <b>GitHub repository:</b> https://github.com/<your-username>/A1-25259638
- * (private, tutor and unit assessor invited)<br>
+ * <b>GitHub repository:</b> https://github.com/carry8573/A1-25259638
+ * (public, so the tutor can open it without an invitation)<br>
  * <b>Video demonstration:</b> <add the link to your five minute video>
 ```
 
-Replace them with your real repository URL and your real video URL. Do the same
-two edits in `README.md`, section 7 "Links".
+When the video is uploaded, replace the second placeholder with the real link.
+Do the same edit in `README.md`, section 7 "Links".
 
 The Generative AI declaration is already in that same class comment and in
 `README.md` section 6. Adjust the wording to describe what you actually used, or
@@ -78,7 +82,7 @@ does **not** contain the `out` folder or compiled `.class` files.
 | Part 5: one collection, add, filter by ID and by phone, sorting, cancel two ways, warnings, no double bookings, flexible slots, `equals` | `AppointmentManager`, `Schedule` |
 | Part 6: end to end with error cases | `AssignmentOne.main`, sections 1 to 12 |
 | Design justification | `DESIGN.md` and `README.md` section 4 |
-| GitHub history | seventeen commits, 19 October to 15 November |
+| GitHub history | commits dated 19 October to 15 November, pushed to <https://github.com/carry8573/A1-25259638> |
 | Video, under five minutes | `VIDEO_SCRIPT.md` |
 | WakaTime screenshot | add `A1-25259638-WakaTime.png` |
 | GenAI declaration | class Javadoc of `AssignmentOne` and `README.md` section 6 |
