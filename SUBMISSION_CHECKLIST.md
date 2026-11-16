@@ -6,9 +6,9 @@ carry your name and your recording.
 
 ## 1. Before you submit - two things only you can do
 
-- [x] **Create the GitHub repository** called `A1-25259638` and push this folder
-      to it. Done: <https://github.com/carry8573/A1-25259638>, branch `main`,
-      commits dated from 19 October to 15 November.
+- [x] **Create the GitHub repository** called `A1-j.zhang.95` and push this folder
+      to it. Done: <https://github.com/carry8573/A1-j.zhang.95>, branch `main`,
+      commits dated from 19 October to 16 November.
       The repository is public, so the tutor can open it without an invitation.
       If you would rather make it private, use Settings, General, Change
       visibility, and then invite the tutor and the unit assessor as
@@ -19,7 +19,7 @@ carry your name and your recording.
       minutes forty seconds. Upload it and keep the link.
 - [ ] **Take the WakaTime screenshot**: open your WakaTime dashboard, set the
       range to the assessment period, and save it as
-      `A1-25259638-WakaTime.png` in this folder.
+      `A1-j.zhang.95-WakaTime.png` in this folder.
 
 ## 2. Put the two links in the code
 
@@ -27,7 +27,7 @@ The GitHub link is already in place. The class Javadoc at the top of
 `src/AssignmentOne.java` says:
 
 ```
- * <b>GitHub repository:</b> https://github.com/carry8573/A1-25259638
+ * <b>GitHub repository:</b> https://github.com/carry8573/A1-j.zhang.95
  * (public, so the tutor can open it without an invitation)<br>
  * <b>Video demonstration:</b> <add the link to your five minute video>
 ```
@@ -42,7 +42,7 @@ delete it if you are not declaring any AI use.
 ## 3. Final check that it still compiles and runs
 
 ```bash
-cd A1-25259638
+cd A1-j.zhang.95
 javac -d out src/*.java
 java -cp out AssignmentOne
 ```
@@ -50,9 +50,10 @@ java -cp out AssignmentOne
 The output should end with `END OF DEMONSTRATION` and should show, in order:
 ten professionals, the roster for today, seven bookings, one full appointment,
 the `equals` demonstration, the sorted table, the two filtered tables, the two
-sorting examples, the four booking rejections, the two constructor exceptions,
-the three cancellation failures, the two cancellations, and finally the four
-remaining appointments.
+sorting examples, the second timetable and the second day with the free slot
+list, the five booking rejections, the two constructor exceptions, the three
+cancellation failures, the two cancellations, and finally the four remaining
+appointments.
 
 `SAMPLE_OUTPUT.txt` is a saved copy of that run - it is what a marker should
 see, apart from the day of the week, which changes with the system date.
@@ -62,7 +63,7 @@ see, apart from the day of the week, which changes with the system date.
 The zip must contain the whole project. From the parent folder:
 
 ```powershell
-Compress-Archive -Path A1-25259638 -DestinationPath A1-25259638.zip -Force
+Compress-Archive -Path A1-j.zhang.95 -DestinationPath A1-j.zhang.95.zip -Force
 ```
 
 Check that the zip contains `src` with all twelve `.java` files, and that it
@@ -80,9 +81,9 @@ does **not** contain the `out` folder or compiled `.class` files.
 | Part 3: several objects of each type, full details, no repetition, one loop | `AssignmentOne.displayEveryProfessional` |
 | Part 4: `Patient` class, `Appointment`, never invalid, prints the professional, ordering | `Patient`, `Appointment` |
 | Part 5: one collection, add, filter by ID and by phone, sorting, cancel two ways, warnings, no double bookings, flexible slots, `equals` | `AppointmentManager`, `Schedule` |
-| Part 6: end to end with error cases | `AssignmentOne.main`, sections 1 to 12 |
+| Part 6: end to end with error cases | `AssignmentOne.main`, sections 1 to 13 |
 | Design justification | `DESIGN.md` and `README.md` section 4 |
-| GitHub history | commits dated 19 October to 15 November, pushed to <https://github.com/carry8573/A1-25259638> |
+| GitHub history | commits dated 19 October to 16 November, pushed to <https://github.com/carry8573/A1-j.zhang.95> |
 | Video, under five minutes | `VIDEO_SCRIPT.md` |
-| WakaTime screenshot | add `A1-25259638-WakaTime.png` |
+| WakaTime screenshot | add `A1-j.zhang.95-WakaTime.png` |
 | GenAI declaration | class Javadoc of `AssignmentOne` and `README.md` section 6 |

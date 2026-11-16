@@ -315,14 +315,54 @@ schedule, so the design was checked against those changes:
   interface, which is precisely why prescribing is not on the superclass.
 - **A different timetable.** `new AppointmentManager(new Schedule(LocalTime.of(9, 0),
   LocalTime.of(17, 0), 20))`. No other class changes.
-- **Several days of bookings.** `Appointment` would gain a `LocalDate` and
-  `compareTo` would compare the date first; the manager's "is it today" check
-  would become a check against the appointment's own date. Contained change.
+- **Several days of bookings.** `Appointment` already stores a `WeekDay` and the
+  manager already takes the day it is managing, so the change is confined to
+  replacing `WeekDay` with `LocalDate` in `Appointment` and letting the manager
+  hold a date per appointment instead of one `workingDay`. No other class needs
+  to change.
 - **A database.** The immutable value classes, the single manager and the ID
   based equality are the same ideas a persistence layer needs; only the manager
   would change.
 
-## 13. Trade-offs that were consciously accepted
+## 13. Keeping the rules flexible
+
+A design that only works for one clinic, on one day, with one timetable would
+describe today's data rather than model the clinic. Four decisions keep the
+rules reusable without weakening any of them:
+
+1. **The timetable is an object, not a constant.** `Schedule(start, end,
+   slotMinutes)` builds its own slot list and rejects a slot length that does not
+   divide the opening period exactly. An evening clinic open 17:00 to 20:00 in
+   20 minute slots is
+   `new Schedule(LocalTime.of(17, 0), LocalTime.of(20, 0), 20)` - nine slots -
+   and neither `Appointment` nor `AppointmentManager` is touched.
+2. **The day is supplied, not read from the clock.** `AppointmentManager` keeps a
+   `workingDay` field that is `null` for "use the system date" and holds a
+   `WeekDay` when a caller pins the manager to a day. Every roster check goes
+   through `getWorkingDay()`, so the rule is written once and can be applied to
+   any day. That is also what makes the rule demonstrable: the program does not
+   have to wait for Saturday to prove that a Monday to Friday professional is
+   refused on Saturday.
+3. **The appointment carries its own day.** `Appointment` stores a `WeekDay`
+   rather than a `LocalDate`. The clinic books the current week, so a full date
+   would carry information the clinic never uses, while the day of the week is
+   the vocabulary the roster is written in. Two useful consequences follow:
+   printing an appointment can never show a day that disagrees with the booking,
+   and the manager can refuse an appointment that belongs to another day's
+   collection with a precise message instead of quietly storing it in the wrong
+   list.
+4. **The manager can answer "what is free?" as well as "is this allowed?".**
+   `getFreeSlots(professional)` walks the timetable, skips the slots that
+   professional already occupies and returns the rest, taking the roster into
+   account. A receptionist interface can therefore offer the available times
+   instead of making the patient guess a time and be rejected.
+
+The cost is a slightly larger `Appointment` and `AppointmentManager`. The gain is
+that each rule exists once, is parameterised, and both parameters - the
+timetable and the day - are exercised by the demonstration rather than described
+in a comment.
+
+## 14. Trade-offs that were consciously accepted
 
 - **Abstract class costs the subclasses their one inheritance slot.** Accepted:
   the professionals have a genuine is-a relationship, and the alternative (an

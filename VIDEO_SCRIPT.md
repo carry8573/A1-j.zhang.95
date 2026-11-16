@@ -190,7 +190,10 @@ protected abstract void addRoleDetails(List<String> lines);
 > eight in the morning to four in the afternoon, thirty minute slots - are not
 > scattered through the manager; they are inside `Schedule`, which generates the
 > sixteen start times in a loop. The manager only asks `isValidSlot(time)`. To
-> change the timetable you change one object, not the booking code. And
+> change the timetable you change one object, not the booking code - and the
+> demonstration does exactly that: a second clinic open from seventeen hundred to
+> twenty hundred in twenty minute slots, and a second manager pinned to Saturday,
+> both running the same classes with no line of the booking code edited. And
 > `Appointment` deliberately does not know whether its slot is free: availability
 > depends on other appointments, and an object should not read a collection it
 > does not own. The manager owns the collection, so the manager owns the rule.

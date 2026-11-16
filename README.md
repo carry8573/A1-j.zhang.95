@@ -21,7 +21,7 @@ The project was written and tested with **JDK 21**. It uses no libraries, so any
 JDK from 8 upwards will compile it.
 
 ```bash
-cd A1-25259638
+cd A1-j.zhang.95
 javac -d out src/*.java
 java -cp out AssignmentOne
 ```
@@ -77,7 +77,11 @@ dietitians do not, and the clinic can still ask any professional "can you
 prescribe?" without knowing its exact class. `Patient`, `Schedule`,
 `Appointment` and `AppointmentManager` then build the booking side on top,
 keeping the "is this booking legal?" rules in the manager and the "these are the
-clinic's slots" rules in `Schedule`, so each class has one reason to change.
+clinic's slots" rules in `Schedule`, so each class has one reason to change. The
+timetable and the day are objects passed to the manager rather than values
+written into it, so the same classes run a different clinic - an evening
+timetable, or a day other than the machine's own - by handing them different
+objects.
 
 ---
 
@@ -173,9 +177,10 @@ the defaults), two specialists, two nurses and two dietitians - and
   (professional ID and patient mobile) and printed in time order, which suits a
   list; and over a `TreeSet` because the manager needs insertions in arrival
   order and explicit control over when sorting happens.
-- Adding: `addAppointment` checks, in order, for a null appointment, a time that
-  is not a clinic slot, a professional who is not rostered today, and a
-  double-booking. Each case returns a `"BOOKING REJECTED: ..."` message.
+- Adding: `addAppointment` checks, in order, for a null appointment, an
+  appointment written for another day, a time that is not a clinic slot, a
+  professional who is not rostered that day, and a double-booking. Each case
+  returns a `"BOOKING REJECTED: ..."` message.
 - Double bookings: because `Appointment.equals` and `hashCode` are defined by
   professional plus time, the whole check is one call,
   `appointments.contains(appointment)`.
@@ -191,8 +196,18 @@ the defaults), two specialists, two nurses and two dietitians - and
   `"CANCELLATION FAILED: ..."` with the reason on failure. Nothing is silent.
 - The fixed slot set is not hard-coded in the booking code: `Schedule` builds
   its slots from a start time, an end time and a slot length, so changing the
-  clinic's hours or switching to 20 minute slots means changing one default, not
-  the manager.
+  clinic's hours or switching to 20 minute slots means passing a different
+  `Schedule` object, not editing the manager.
+- The day is not hard-coded either: the manager reads the day through
+  `getWorkingDay()`, which returns the real current day unless the manager was
+  created with a fixed day, for example
+  `new AppointmentManager(schedule, WeekDay.SATURDAY)`. The roster rule is
+  written once and works for any day; `AssignmentOne` shows a second manager
+  running the same rule for Saturday.
+- The manager can also answer the opposite question: `getFreeSlots(professional)`
+  returns the slots that professional could still be booked into, so a
+  receptionist can be offered the free times instead of only being told that a
+  time is refused.
 - Equality of professionals: the Java way is `equals`/`hashCode`, implemented
   once in `HealthProfessional` on the ID, which is the clinic's unique key.
   `AssignmentOne` shows it with two objects that have the same ID but different
@@ -211,11 +226,14 @@ the defaults), two specialists, two nurses and two dietitians - and
 7. every appointment, earliest first;
 8. the same list filtered by professional ID, then by patient mobile;
 9. sorting applied to a filtered subset and to the whole collection;
-10. the booking error cases: double booking, a time that is not a slot, an
+10. the same classes run as a different clinic: an evening timetable with 20
+    minute slots, a Saturday instead of today, the free slots left for a
+    professional, and an appointment for the wrong day being refused;
+11. the booking error cases: double booking, a time that is not a slot, an
     off duty professional, no details at all, and the two constructor
     exceptions;
-11. the cancellation error cases, then two successful cancellations;
-12. the collection after the cancellations, and a repeated cancellation that now
+12. the cancellation error cases, then two successful cancellations;
+13. the collection after the cancellations, and a repeated cancellation that now
     fails - which proves the first one really removed the appointment.
 
 A full captured run is in `SAMPLE_OUTPUT.txt`.
@@ -264,6 +282,6 @@ A full captured run is in `SAMPLE_OUTPUT.txt`.
 
 ## 7. Links
 
-- GitHub repository: **https://github.com/carry8573/A1-25259638**
+- GitHub repository: **https://github.com/carry8573/A1-j.zhang.95**
 - Video (four pillars, under 5 minutes): **<add the video link here>**
-- WakaTime report: `A1-25259638-WakaTime.png`
+- WakaTime report: `A1-j.zhang.95-WakaTime.png`
