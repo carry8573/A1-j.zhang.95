@@ -124,6 +124,8 @@ public class Patient {
      * @return the formatted mobile number
      */
     public String getFormattedMobileNumber() {
+        // The stored value is always ten digits, so the groups are fixed: the
+        // first four digits, then three, then the last three.
         return mobileNumber.substring(0, 4) + " " + mobileNumber.substring(4, 7) + " "
                 + mobileNumber.substring(7);
     }

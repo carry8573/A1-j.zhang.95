@@ -82,7 +82,13 @@ public class Nurse extends HealthProfessional {
      */
     public Nurse(String id, String name, List<WeekDay> workingDays,
                  Level level, int yearsOfExperience) {
+        // The shared state is stored first by the superclass, because Java
+        // requires the superclass part of an object to be built before the
+        // subclass adds its own values.
         super(id, name, workingDays);
+        // A nurse without a level, or with negative experience, would be an
+        // object the rest of the program could not reason about, so both are
+        // rejected here rather than being stored half correct.
         if (level == null) {
             throw new IllegalArgumentException("A nurse must have a nursing level.");
         }

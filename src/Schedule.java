@@ -80,6 +80,9 @@ public class Schedule {
         if (slotMinutes <= 0) {
             throw new IllegalArgumentException("The length of a slot must be greater than zero.");
         }
+        // The slot length must divide the opening period exactly, otherwise the
+        // timetable would end with a slot that runs past closing time or with a
+        // short, unusable gap.
         long openingMinutes = Duration.between(startTime, endTime).toMinutes();
         if (openingMinutes % slotMinutes != 0) {
             throw new IllegalArgumentException("A " + slotMinutes
@@ -103,10 +106,14 @@ public class Schedule {
     private List<LocalTime> buildSlots() {
         List<LocalTime> generated = new ArrayList<>();
         LocalTime slot = startTime;
+        // "Before the closing time" is what keeps 16:00 out of an 08:00 to 16:00
+        // day: a slot that started then would run after the clinic had closed.
         while (slot.isBefore(endTime)) {
             generated.add(slot);
             slot = slot.plusMinutes(slotMinutes);
         }
+        // The list is wrapped as unmodifiable so a caller cannot change the
+        // timetable by accident; the schedule stays the only owner of its slots.
         return Collections.unmodifiableList(generated);
     }
 

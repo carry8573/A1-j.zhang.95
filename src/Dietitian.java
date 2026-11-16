@@ -33,7 +33,12 @@ public class Dietitian extends HealthProfessional {
      */
     public Dietitian(String id, String name, List<WeekDay> workingDays,
                      String focusArea, int weeklyCapacity) {
+        // Shared state comes from the superclass; the focus area and the weekly
+        // capacity are the values that only a dietitian has.
         super(id, name, workingDays);
+        // A dietitian with no focus area or with no capacity would print an empty
+        // line or a nonsensical load, so both values are checked before they are
+        // stored and the object is never left in that state.
         if (focusArea == null || focusArea.trim().isEmpty()) {
             throw new IllegalArgumentException("A dietitian must have an area of focus.");
         }

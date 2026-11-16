@@ -34,6 +34,8 @@ public class Specialist extends HealthProfessional implements Prescriber {
      */
     public Specialist(String id, String name, List<WeekDay> workingDays,
                       String specialty, double consultationFee) {
+        // The shared state is stored by the superclass; the two values below are
+        // the only ones that belong to a specialist.
         super(id, name, workingDays);
         this.specialty = validateSpecialty(specialty);
         this.consultationFee = validateFee(consultationFee);
@@ -49,6 +51,8 @@ public class Specialist extends HealthProfessional implements Prescriber {
      * @throws IllegalArgumentException if any argument is invalid
      */
     public Specialist(String id, String name, String specialty) {
+        // A specialist in a public hospital clinic charges the patient nothing,
+        // so the shorter constructor supplies that default for the fee.
         this(id, name, WEEKDAYS, specialty, 0.0);
     }
 
