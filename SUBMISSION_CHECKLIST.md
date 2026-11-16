@@ -33,7 +33,9 @@ The GitHub link is already in place. The class Javadoc at the top of
 ```
 
 When the video is uploaded, replace the second placeholder with the real link.
-Do the same edit in `README.md`, section 7 "Links".
+Nothing else needs editing: the README carries no placeholder, because it is
+written as finished work for the marker, and the brief asks for the video link
+in the comments anyway.
 
 The Generative AI declaration is already in that same class comment and in
 `README.md` section 6. Adjust the wording to describe what you actually used, or
