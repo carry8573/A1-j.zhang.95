@@ -243,4 +243,3 @@ removed the appointment.
 ## 7. Links
 
 - Repository: **https://github.com/carry8573/A1-j.zhang.95**
-- WakaTime report: `A1-j.zhang.95-WakaTime.png`
